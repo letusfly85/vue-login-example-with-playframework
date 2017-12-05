@@ -2,8 +2,8 @@
   <div class="sign in">
     <h1>{{ msg }}</h1>
     <form>
-      <p>email: <input type="text"></p>
-      <p>password: <input type="text"></p>
+      <p>email: <input type="text" placeholder="email" ref="email"></p>
+      <p>password: <input type="text" placeholder="password" ref="password"></p>
       <button v-on:click="signIn()">Sign In</button>
     </form>
   </div>
@@ -21,7 +21,11 @@ export default {
   methods: {
     signIn: function (event) {
       console.log('sign in')
-      Auth.authenticate('/signIn', {email: 'test@gmail.com', password: 'test', rememberMe: true})
+      var email = this.$refs.email.value
+      var password = this.$refs.password.value
+      console.log(email)
+      console.log(password)
+      Auth.authenticate('/signIn', {email: email, password: password, rememberMe: true})
     }
   }
 }

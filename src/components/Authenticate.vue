@@ -16,7 +16,6 @@ export default {
     return axios.post(targetPath, params, config)
     .then((res) => {
       console.log(res.data)
-      this.$emit('SIGN_IN_SUCCESEED')
     }).catch(function (error) {
       console.log(error)
     })
