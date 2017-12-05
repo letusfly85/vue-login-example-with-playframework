@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <form>
       <p>email: <input type="text" placeholder="email" ref="email"></p>
-      <p>password: <input type="text" placeholder="password" ref="password"></p>
+      <p>password: <input type="password" placeholder="password" ref="password"></p>
       <button v-on:click="signIn()">Sign In</button>
     </form>
   </div>
@@ -23,8 +23,6 @@ export default {
       console.log('sign in')
       var email = this.$refs.email.value
       var password = this.$refs.password.value
-      console.log(email)
-      console.log(password)
       Auth.authenticate('/signIn', {email: email, password: password, rememberMe: true})
     }
   }
