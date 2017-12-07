@@ -11,6 +11,7 @@
 
 <script>
 import Auth from './Authenticate.vue'
+import CoffeeBean from './CoffeeBean.vue'
 export default {
   name: 'SignIn',
   data () {
@@ -24,6 +25,7 @@ export default {
       var email = this.$refs.email.value
       var password = this.$refs.password.value
       Auth.authenticate('/signIn', {email: email, password: password, rememberMe: true})
+      CoffeeBean.find(123)
     }
   }
 }
