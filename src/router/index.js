@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import SignIn from '@/components/SignIn'
+import CoffeeBean from '@/components/CoffeeBean.vue'
+import CoffeeShop from '@/components/CoffeeShop.vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -14,6 +16,16 @@ export default new Router({
       path: '/',
       name: 'SignIn',
       component: SignIn
+    },
+    {
+      path: '/coffee-beans',
+      name: 'CoffeeBean',
+      component: CoffeeBean
+    },
+    {
+      path: '/coffee-shops',
+      name: 'CoffeeShop',
+      component: CoffeeShop
     }
   ]
 })

@@ -1,3 +1,9 @@
+<template>
+  <div>
+    // TODO listing coffee shops
+ </div>
+</template>
+
 <script>
 import axios from 'axios'
 axios.defaults.xsrfHeaderName = 'Csrf-Token'

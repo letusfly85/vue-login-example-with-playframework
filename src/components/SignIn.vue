@@ -1,14 +1,4 @@
 <template>
-  <!--
-  <div class="sign in">
-    <h1>{{ msg }}</h1>
-    <form>
-      <p>email: <input type="text" placeholder="email" ref="email"></p>
-      <p>password: <input type="password" placeholder="password" ref="password"></p>
-      <button v-on:click="signIn()">Sign In</button>
-    </form>
-  </div>
--->
   <div>
    <b-form @submit="signIn()">
      <b-form-group id="email"
@@ -52,11 +42,14 @@ export default {
   methods: {
     signIn: function (event) {
       console.log('sign in')
-      var email = this.form.email
-      var password = this.form.password
-      Auth.authenticate('/signIn', {email: email, password: password, rememberMe: true})
-      CoffeeBean.find(123)
-      CoffeeShop.find(123)
+      let params = {email: this.form.email, password: this.form.password, rememberMe: true}
+
+      Auth.authenticate('/signIn', params, (res) => {
+        this.$router.push('/coffee-beans/123')
+        console.log(res.data)
+      })
+      // CoffeeBean.find(123)
+      // CoffeeShop.find(123)
     }
   }
 }
