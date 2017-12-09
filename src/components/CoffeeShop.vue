@@ -12,7 +12,7 @@ const config = {
 
 export default {
   find: function (id) {
-    let targetPath = baseUrl + '/api/coffee-beans/' + id
+    let targetPath = baseUrl + '/api/coffee-shops/' + id
     return axios.get(targetPath, config)
     .then((res) => {
       console.log(res.data)
