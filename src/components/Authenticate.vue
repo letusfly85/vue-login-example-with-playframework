@@ -15,7 +15,6 @@ export default {
     let targetPath = baseUrl + path
     return axios.post(targetPath, params, config)
     .then((res) => {
-      console.log(res.data)
       callback(res)
     }).catch(function (error) {
       console.log(error)

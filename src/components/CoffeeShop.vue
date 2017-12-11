@@ -1,7 +1,5 @@
 <template>
-  <div>
-    // TODO listing coffee shops
- </div>
+    <b-table striped hover :items="coffeeShops"></b-table>
 </template>
 
 <script>
@@ -17,13 +15,34 @@ const config = {
 }
 
 export default {
-  find: function (id) {
-    let targetPath = baseUrl + '/api/coffee-shops/' + id
-    return axios.get(targetPath, config)
-    .then((res) => {
-      console.log(res.data)
-    }).catch(function (error) {
-      console.log(error)
+  data () {
+    return {
+      coffeeShops: []
+    }
+  },
+  methods: {
+    list: function (callback) {
+      let targetPath = baseUrl + '/api/coffee-shops'
+      return axios.get(targetPath, config)
+      .then((res) => {
+        callback(res.data)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    find: function (id, callback) {
+      let targetPath = baseUrl + '/api/coffee-shops/' + id
+      return axios.get(targetPath, config)
+      .then((res) => {
+        callback(res.data)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
+  },
+  created: function () {
+    this.list((result) => {
+      this.coffeeShops = result
     })
   }
 }

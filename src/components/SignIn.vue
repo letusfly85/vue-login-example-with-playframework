@@ -39,15 +39,11 @@ export default {
   },
   methods: {
     signIn: function (event) {
-      console.log('sign in')
       let params = {email: this.form.email, password: this.form.password, rememberMe: true}
 
       Auth.authenticate('/signIn', params, (res) => {
-        this.$router.push('/coffee-beans/123')
-        console.log(res.data)
+        this.$router.push('/coffee-shops')
       })
-      // CoffeeBean.find(123)
-      // CoffeeShop.find(123)
     }
   }
 }
