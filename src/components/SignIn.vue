@@ -26,8 +26,6 @@
 
 <script>
 import Auth from './Authenticate.vue'
-import CoffeeBean from './CoffeeBean.vue'
-import CoffeeShop from './CoffeeShop.vue'
 export default {
   name: 'SignIn',
   data () {
