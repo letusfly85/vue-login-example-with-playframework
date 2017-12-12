@@ -25,7 +25,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Auth from './Authenticate.vue'
+
+const baseUrl = 'http://localhost:9000'
+
 export default {
   name: 'SignIn',
   data () {
@@ -44,7 +48,24 @@ export default {
       Auth.authenticate('/signIn', params, (res) => {
         this.$router.push('/coffee-shops')
       })
+    },
+    home: function (callback, errorHandler) {
+      let targetPath = baseUrl + '/'
+      return axios.get(targetPath)
+      .then((res) => {
+        callback(res.data)
+      }).catch(function (error) {
+        errorHandler(error)
+      })
     }
+  },
+  created: function () {
+    this.home((result) => {
+      this.$router.push('/coffee-shops')
+    }, (error) => {
+      console.log(error)
+      this.$router.push('/signIn')
+    })
   }
 }
 </script>
