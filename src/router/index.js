@@ -4,6 +4,7 @@ import BootstrapVue from 'bootstrap-vue'
 import SignIn from '@/components/SignIn'
 import CoffeeBean from '@/components/CoffeeBean.vue'
 import CoffeeShop from '@/components/CoffeeShop.vue'
+import Home from '@/components/Home.vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -12,6 +13,11 @@ Vue.use(BootstrapVue)
 
 export default new Router({
   routes: [
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
+    },
     {
       path: '/signIn',
       name: 'SignIn',
