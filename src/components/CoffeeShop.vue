@@ -4,8 +4,10 @@
 
 <script>
 import axios from 'axios'
+
 axios.defaults.xsrfHeaderName = 'Csrf-Token'
 axios.defaults.xsrfCookieName = 'PLAY_CSRF_TOKEN'
+axios.defaults.withCredentials = true
 
 const baseUrl = 'http://localhost:9000'
 
@@ -15,19 +17,20 @@ const config = {
 }
 
 export default {
+  name: 'CoffeeShop',
   data () {
     return {
       coffeeShops: []
     }
   },
   methods: {
-    list: function (callback) {
+    list: function (callback, errorHandler) {
       let targetPath = baseUrl + '/api/coffee-shops'
       return axios.get(targetPath, config)
       .then((res) => {
         callback(res.data)
       }).catch(function (error) {
-        console.log(error)
+        errorHandler(error)
       })
     },
     find: function (id, callback) {
@@ -43,6 +46,9 @@ export default {
   created: function () {
     this.list((result) => {
       this.coffeeShops = result
+    }, (error) => {
+      console.log(error)
+      this.$router.push('/signIn')
     })
   }
 }

@@ -13,7 +13,7 @@ Vue.use(BootstrapVue)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/signIn',
       name: 'SignIn',
       component: SignIn
     },
