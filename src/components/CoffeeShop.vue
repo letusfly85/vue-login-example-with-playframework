@@ -1,5 +1,10 @@
 <template>
-    <b-table striped hover :items="coffeeShops"></b-table>
+    <b-table striped hover :items="coffeeShops">
+      <template slot="id" scope="row">
+        <!-- todo change row.item.id to variant -->
+        <b-link href="#/coffee-beans?coffee-shop-id=row.item.id">{{ row.item.id }}</b-link>
+      </template>
+    </b-table>
 </template>
 
 <script>
