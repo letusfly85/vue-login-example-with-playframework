@@ -1,5 +1,47 @@
 <template>
     <b-table striped hover :items="coffeeBeans">
+      <template slot="id" slot-scope="row">
+        <b-button size="sm" @click.stop="row.toggleDetails" class="mr-2">
+          {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+        </b-button>
+      </template>
+      <template slot="row-details" slot-scope="row">
+        <b-card>
+          <b-form @submit="update">
+            <b-row class="mb-2">
+            <b-form-input id="name"
+                         type="text"
+                         v-model="form.name"
+                         required
+                         :placeholder="`${row.item.name}`">
+            </b-form-input>
+            </b-row>
+
+            <b-row class="mb-2">
+            <b-form-input id="kind"
+                         type="text"
+                         v-model="form.kind"
+                         required
+                         :placeholder="`${row.item.kind}`">
+            </b-form-input>
+            </b-row>
+
+            <b-row class="sr-only">
+            <b-form-input id="cid"
+                          v-bind:value="`${form.cid = row.item.id}`">
+            </b-form-input>
+            <b-form-input id="coffee_shop_id"
+                          v-bind:value="`${form.coffee_shop_id = row.item.coffee_shop_id}`">
+            </b-form-input>
+            </b-row>
+
+            <b-button type="submit">Update</b-button>
+            <br/>
+            <br/>
+          </b-form>
+          <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+        </b-card>
+      </template>
     </b-table>
 </template>
 
@@ -7,6 +49,7 @@
 import axios from 'axios'
 axios.defaults.xsrfHeaderName = 'Csrf-Token'
 axios.defaults.xsrfCookieName = 'PLAY_CSRF_TOKEN'
+axios.defaults.withCredentials = true
 
 const baseUrl = 'http://localhost:9000'
 
@@ -18,7 +61,13 @@ const config = {
 export default {
   data () {
     return {
-      coffeeBeans: []
+      coffeeBeans: [],
+      form: {
+        cid: '',
+        name: '',
+        kind: '',
+        coffee_shop_id: ''
+      }
     }
   },
   find: function (id) {
@@ -38,6 +87,17 @@ export default {
         callback(res.data)
       }).catch(function (error) {
         errorHandler(error)
+      })
+    },
+    update: function () {
+      let params = {id: Number(this.form.cid), name: this.form.name, kind: this.form.kind, coffee_shop_id: Number(this.form.coffee_shop_id)}
+      let targetPath = baseUrl + '/api/coffee-beans'
+      axios.post(targetPath, params, config)
+      .then((res) => {
+        console.log(res)
+        location.reload()
+      }).catch(function (error) {
+        console.log(error)
       })
     }
   },
