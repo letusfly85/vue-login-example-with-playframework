@@ -1,6 +1,6 @@
 <template>
     <b-table striped hover :items="coffeeShops">
-      <template slot="id" scope="row">
+      <template slot="id" slot-scope="row">
         <b-link :href="`#/coffee-beans?coffee-shop-id=${row.item.id}`">{{ row.item.id }}</b-link>
       </template>
     </b-table>
