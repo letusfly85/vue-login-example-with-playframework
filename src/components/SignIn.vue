@@ -1,7 +1,7 @@
 <template>
   <div>
    <b-form @submit="signIn()">
-     <b-form-group id="email"
+     <b-form-group id="emailGroup"
                    label="Email address:"
                    description="We'll never share your email with anyone else.">
        <b-form-input id="email"
@@ -11,7 +11,7 @@
                      placeholder="Enter email">
        </b-form-input>
     </b-form-group>
-    <b-form-group id="password" label="Password:">
+    <b-form-group id="passwordGroup" label="Password:">
        <b-form-input id="password"
                      type="password"
                      v-model="form.password"
