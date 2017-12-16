@@ -1,5 +1,5 @@
 <template>
-    <b-table striped hover :items="coffeeBeans">
+    <b-table striped hover :items="coffeeBeans" :fields="fields">
       <template slot="id" slot-scope="row">
         <b-button size="sm" @click.stop="row.toggleDetails" class="mr-2">
           {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
@@ -61,6 +61,11 @@ const config = {
 export default {
   data () {
     return {
+      fields: {
+        id: {label: '-', sortable: false},
+        name: {label: 'name', sortable: true},
+        kind: {label: 'kind', sortable: true}
+      },
       coffeeBeans: [],
       form: {
         cid: '',
@@ -90,11 +95,16 @@ export default {
       })
     },
     update: function () {
-      let params = {id: Number(this.form.cid), name: this.form.name, kind: this.form.kind, coffee_shop_id: Number(this.form.coffee_shop_id)}
+      let params = {
+        id: Number(this.form.cid),
+        name: this.form.name,
+        kind: this.form.kind,
+        coffee_shop_id: Number(this.form.coffee_shop_id)
+      }
       let targetPath = baseUrl + '/api/coffee-beans'
+
       axios.post(targetPath, params, config)
       .then((res) => {
-        console.log(res)
         location.reload()
       }).catch(function (error) {
         console.log(error)
