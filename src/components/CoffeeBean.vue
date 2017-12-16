@@ -1,8 +1,9 @@
 <template>
+  <div>
     <b-table striped hover :items="coffeeBeans" :fields="fields">
       <template slot="id" slot-scope="row">
-        <b-button size="sm" @click.stop="row.toggleDetails" class="mr-2">
-          {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+        <b-button size="sm" @click.stop="row.toggleDetails" class="mr-2" variant="success">
+          {{ row.detailsShowing ? 'Cancel' : 'Update'}} Coffee Beans
         </b-button>
       </template>
       <template slot="row-details" slot-scope="row">
@@ -43,6 +44,11 @@
         </b-card>
       </template>
     </b-table>
+
+    <b-button size="sm" class="mr-2" variant="outline-success">
+      Add new Coffee Bean
+    </b-button>
+  </div>
 </template>
 
 <script>
