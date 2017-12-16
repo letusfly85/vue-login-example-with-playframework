@@ -36,18 +36,43 @@
             </b-form-input>
             </b-row>
 
-            <b-button type="submit">Update</b-button>
+            <b-button type="submit" size="sm" variant="primary">Update</b-button>
             <br/>
             <br/>
           </b-form>
-          <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
         </b-card>
       </template>
     </b-table>
 
-    <b-button size="sm" class="mr-2" variant="outline-success">
-      Add new Coffee Bean
-    </b-button>
+    <template>
+      <b-button :pressed.sync="addToggle" size="sm" class="mr-2" variant="outline-success">
+        Add new Coffee Bean
+      </b-button>
+      <br/>
+      <br/>
+      <b-card v-if="addToggle">
+        <b-form @submit="create">
+          <b-row class="mb-2">
+          <b-form-input id="name"
+                       type="text"
+                       v-model="form.name"
+                       required
+                       placeholder='coffee name'>
+          </b-form-input>
+          </b-row>
+
+          <b-row class="mb-2">
+          <b-form-input id="kind"
+                       type="text"
+                       v-model="form.kind"
+                       required
+                       placeholder='coffee kind'>
+          </b-form-input>
+          </b-row>
+          <b-button type="submit" size="sm" variant="primary">Create</b-button>
+        </b-form>
+      </b-card>
+    </template>
   </div>
 </template>
 
@@ -67,6 +92,8 @@ const config = {
 export default {
   data () {
     return {
+      coffeeShopId: 0,
+      addToggle: false,
       fields: {
         id: {label: '-', sortable: false},
         name: {label: 'name', sortable: true},
@@ -109,6 +136,22 @@ export default {
       }
       let targetPath = baseUrl + '/api/coffee-beans'
 
+      axios.put(targetPath, params, config)
+      .then((res) => {
+        location.reload()
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    create: function () {
+      let params = {
+        id: 0, // dummy value
+        name: this.form.name,
+        kind: this.form.kind,
+        coffee_shop_id: Number(this.coffeeShopId)
+      }
+      let targetPath = baseUrl + '/api/coffee-beans'
+
       axios.post(targetPath, params, config)
       .then((res) => {
         location.reload()
@@ -118,8 +161,8 @@ export default {
     }
   },
   created: function () {
-    let coffeeShopId = this.$route.query['coffee-shop-id']
-    this.search(coffeeShopId, (result) => {
+    this.coffeeShopId = this.$route.query['coffee-shop-id']
+    this.search(this.coffeeShopId, (result) => {
       this.coffeeBeans = result
     }, (error) => {
       console.log(error)
