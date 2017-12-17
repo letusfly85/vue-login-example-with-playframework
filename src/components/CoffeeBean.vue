@@ -40,6 +40,29 @@
             <br/>
             <br/>
           </b-form>
+          <b-form @submit="destroy">
+            <b-row class="sr-only">
+            <b-form-input id="cid"
+                          v-bind:value="`${form.cid= row.item.id}`">
+            </b-form-input>
+            </b-row>
+            <b-row class="sr-only">
+            <b-form-input id="name"
+                          v-bind:value="`${form.name = row.item.name}`">
+            </b-form-input>
+            </b-row>
+            <b-row class="sr-only">
+            <b-form-input id="kind"
+                          v-bind:value="`${form.kind = row.item.kind}`">
+            </b-form-input>
+            </b-row>
+            <b-row class="sr-only">
+            <b-form-input id="coffee_shop_id"
+                          v-bind:value="`${form.coffee_shop_id = row.item.coffee_shop_id}`">
+            </b-form-input>
+            </b-row>
+            <b-button type="submit" size="sm" variant="primary">Destroy</b-button>
+          </b-form>
         </b-card>
       </template>
     </b-table>
@@ -154,6 +177,23 @@ export default {
 
       axios.post(targetPath, params, config)
       .then((res) => {
+        location.reload()
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    destroy: function () {
+      let params = {
+        id: Number(this.form.cid),
+        name: this.form.name,
+        kind: this.form.kind,
+        coffee_shop_id: Number(this.coffeeShopId)
+      }
+      let targetPath = baseUrl + '/api/coffee-beans/' + this.form.cid
+
+      axios.delete(targetPath, {paramas: params}, config)
+      .then((res) => {
+        console.log(res)
         location.reload()
       }).catch(function (error) {
         console.log(error)
