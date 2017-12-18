@@ -46,21 +46,6 @@
                           v-bind:value="`${form.cid= row.item.id}`">
             </b-form-input>
             </b-row>
-            <b-row class="sr-only">
-            <b-form-input id="name"
-                          v-bind:value="`${form.name = row.item.name}`">
-            </b-form-input>
-            </b-row>
-            <b-row class="sr-only">
-            <b-form-input id="kind"
-                          v-bind:value="`${form.kind = row.item.kind}`">
-            </b-form-input>
-            </b-row>
-            <b-row class="sr-only">
-            <b-form-input id="coffee_shop_id"
-                          v-bind:value="`${form.coffee_shop_id = row.item.coffee_shop_id}`">
-            </b-form-input>
-            </b-row>
             <b-button type="submit" size="sm" variant="primary">Destroy</b-button>
           </b-form>
         </b-card>
@@ -69,7 +54,7 @@
 
     <template>
       <b-button :pressed.sync="addToggle" size="sm" class="mr-2" variant="outline-success">
-        Add new Coffee Bean
+        {{ addToggle ? 'Cancel' : ''}} Add new Coffee Beans
       </b-button>
       <br/>
       <br/>
@@ -161,7 +146,7 @@ export default {
 
       axios.put(targetPath, params, config)
       .then((res) => {
-        location.reload()
+        this.reSearch()
       }).catch(function (error) {
         console.log(error)
       })
@@ -177,26 +162,28 @@ export default {
 
       axios.post(targetPath, params, config)
       .then((res) => {
-        location.reload()
+        this.reSearch()
+        this.addToggle = false
       }).catch(function (error) {
         console.log(error)
       })
     },
     destroy: function () {
-      let params = {
-        id: Number(this.form.cid),
-        name: this.form.name,
-        kind: this.form.kind,
-        coffee_shop_id: Number(this.coffeeShopId)
-      }
       let targetPath = baseUrl + '/api/coffee-beans/' + this.form.cid
 
-      axios.delete(targetPath, {paramas: params}, config)
+      axios.delete(targetPath, {}, config)
       .then((res) => {
-        console.log(res)
-        location.reload()
+        this.reSearch()
       }).catch(function (error) {
         console.log(error)
+      })
+    },
+    reSearch: function () {
+      this.search(this.coffeeShopId, (result) => {
+        this.coffeeBeans = result
+      }, (error) => {
+        console.log(error)
+        this.$router.push('/signIn')
       })
     }
   },
