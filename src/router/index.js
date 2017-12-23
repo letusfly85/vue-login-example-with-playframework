@@ -4,6 +4,7 @@ import BootstrapVue from 'bootstrap-vue'
 import SignIn from '@/components/SignIn'
 import CoffeeBean from '@/components/CoffeeBean.vue'
 import CoffeeShop from '@/components/CoffeeShop.vue'
+import User from '@/components/User.vue'
 import Home from '@/components/Home.vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -32,6 +33,11 @@ export default new Router({
       path: '/coffee-shops',
       name: 'CoffeeShop',
       component: CoffeeShop
+    },
+    {
+      path: '/users',
+      name: 'User',
+      component: User
     }
   ]
 })
