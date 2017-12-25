@@ -51,9 +51,9 @@ export default {
     },
     home: function (callback, errorHandler) {
       let targetPath = baseUrl + '/'
-      return axios.get(targetPath)
+      axios.get(targetPath)
       .then((res) => {
-        callback(res.data)
+        callback(res)
       }).catch(function (error) {
         errorHandler(error)
       })
@@ -61,7 +61,11 @@ export default {
   },
   created: function () {
     this.home((result) => {
-      this.$router.push('/coffee-shops')
+      if (result.status === 200) {
+        this.$router.push('/coffee-shops')
+      } else {
+        this.$router.push('/signIn')
+      }
     }, (error) => {
       console.log(error)
       this.$router.push('/signIn')

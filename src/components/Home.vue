@@ -9,6 +9,7 @@
 <script>
 import axios from 'axios'
 import SignIn from '@/components/SignIn.vue'
+import Router from 'vue-router'
 
 axios.defaults.xsrfHeaderName = 'Csrf-Token'
 axios.defaults.xsrfCookieName = 'PLAY_CSRF_TOKEN'
@@ -26,23 +27,23 @@ export default {
   methods: {
     signOut: function () {
       let targetPath = baseUrl + '/signOut'
-      return axios.get(targetPath, config)
+      axios.get(targetPath, config)
       .then((res) => {
-        this.$router.push('/signIn')
+        var router = new Router()
+        router.go('/signIn')
       }).catch(function (error) {
         console.log(error)
-        this.$router.push('/signIn')
+        var router = new Router()
+        router.go('/signIn')
       })
     }
   },
   created: function () {
     SignIn.methods.home((result) => {
       console.log(result)
-      this.$router.push('/')
     }, (error) => {
       console.log(error)
       this.$router.push('/signIn')
     })
-  }
-}
+  }}
 </script>

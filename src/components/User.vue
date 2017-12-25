@@ -1,10 +1,8 @@
 <template>
   <div>
     <b-table striped hover :items="users" :fields="fields">
-      <!--
       <template slot="id" slot-scope="row">
       </template>
-      -->
     </b-table>
   </div>
 </template>
@@ -48,13 +46,13 @@ export default {
     })
   },
   methods: {
-    search: function (callback) {
+    search: function (callback, errorHandler) {
       let targetPath = baseUrl + '/api/users'
       return axios.get(targetPath, config)
       .then((res) => {
         callback(res.data)
       }).catch(function (error) {
-        console.log(error)
+        errorHandler(error)
       })
     },
     update: function () {
