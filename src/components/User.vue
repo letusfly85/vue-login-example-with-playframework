@@ -1,8 +1,10 @@
 <template>
   <div>
     <b-table striped hover :items="users" :fields="fields">
+      <!--
       <template slot="id" slot-scope="row">
       </template>
+      -->
     </b-table>
   </div>
 </template>
@@ -45,16 +47,16 @@ export default {
       console.log(error)
     })
   },
-  search: function () {
-    let targetPath = baseUrl + '/api/users'
-    return axios.get(targetPath, config)
-    .then((res) => {
-      console.log(res.data)
-    }).catch(function (error) {
-      console.log(error)
-    })
-  },
   methods: {
+    search: function (callback) {
+      let targetPath = baseUrl + '/api/users'
+      return axios.get(targetPath, config)
+      .then((res) => {
+        callback(res.data)
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
     update: function () {
       let params = {
         id: Number(this.form.uid),
