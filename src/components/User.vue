@@ -1,7 +1,13 @@
 <template>
   <div>
     <b-table striped hover :items="users" :fields="fields">
-      <template slot="id" slot-scope="row">
+      <template slot="role" slot-scope="row">
+        <div v-if="!row.item.editable">
+          <div v-text="row.item.role" @click="row.item.editable = true" />
+        </div>
+        <div v-if="row.item.editable">
+          <input type="text" v-model="row.item.role" @blur="row.item.editable = false & blurHandler(row.item.role)" />
+        </div>
       </template>
     </b-table>
   </div>
@@ -27,6 +33,14 @@ export default {
     }
   },
   methods: {
+    blurHandler: function (role) {
+      if (this.editableRow === false) {
+        this.editableRow = true
+      } else {
+        console.log(role)
+        this.editableRow = false
+      }
+    },
     find: function (id) {
       ApiClient.find('/api/users/', id, (response) => {
         console.log(response.data)
@@ -38,7 +52,12 @@ export default {
       let targetPath = '/api/users'
 
       ApiClient.search(targetPath, (response) => {
-        this.users = response.data
+        this.users = response.data.map(function (user) {
+          user.editable = false
+          return user
+        })
+        console.log(this.users)
+        // this.users = users
       }, (error) => {
         console.log(error)
         this.$router.push('/signIn')
@@ -47,7 +66,6 @@ export default {
     update: function () {
       let params = {
         id: Number(this.form.uid),
-        name: this.form.name,
         kind: this.form.role
       }
 
