@@ -85,17 +85,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-axios.defaults.xsrfHeaderName = 'Csrf-Token'
-axios.defaults.xsrfCookieName = 'PLAY_CSRF_TOKEN'
-axios.defaults.withCredentials = true
-
-const baseUrl = 'http://localhost:9000'
-
-const config = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
-}
+import ApiClient from './utils/ApiClient'
 
 export default {
   data () {
@@ -116,39 +106,22 @@ export default {
       }
     }
   },
-  find: function (id) {
-    let targetPath = baseUrl + '/api/coffee-beans/' + id
-    return axios.get(targetPath, config)
-    .then((res) => {
-      console.log(res.data)
-    }).catch(function (error) {
-      console.log(error)
-    })
-  },
   methods: {
-    search: function (id, callback, errorHandler) {
-      let targetPath = baseUrl + '/api/coffee-beans?coffee-shop-id=' + id
-      return axios.get(targetPath, config)
-      .then((res) => {
-        callback(res.data)
-      }).catch(function (error) {
-        errorHandler(error)
+    find: function (id) {
+      ApiClient.find('/api/coffee-beans/', id, (res) => {
+        console.log(res.data)
+      }, (error) => {
+        console.log(error)
       })
     },
-    update: function () {
-      let params = {
-        id: Number(this.form.cid),
-        name: this.form.name,
-        kind: this.form.kind,
-        coffee_shop_id: Number(this.form.coffee_shop_id)
-      }
-      let targetPath = baseUrl + '/api/coffee-beans'
+    reSearch: function () {
+      let targetPath = '/api/coffee-beans?coffee-shop-id=' + this.coffeeShopId
 
-      axios.put(targetPath, params, config)
-      .then((res) => {
-        this.reSearch()
-      }).catch(function (error) {
+      ApiClient.search(targetPath, (response) => {
+        this.coffeeBeans = response.data
+      }, (error) => {
         console.log(error)
+        this.$router.push('/signIn')
       })
     },
     create: function () {
@@ -158,43 +131,40 @@ export default {
         kind: this.form.kind,
         coffee_shop_id: Number(this.coffeeShopId)
       }
-      let targetPath = baseUrl + '/api/coffee-beans'
 
-      axios.post(targetPath, params, config)
-      .then((res) => {
+      ApiClient.create('/api/coffee-beans', params, (res) => {
         this.reSearch()
         this.addToggle = false
-      }).catch(function (error) {
+      }, (error) => {
+        console.log(error)
+      })
+    },
+    update: function () {
+      let params = {
+        id: Number(this.form.cid),
+        name: this.form.name,
+        kind: this.form.kind,
+        coffee_shop_id: Number(this.form.coffee_shop_id)
+      }
+
+      ApiClient.update('/api/coffee-beans', params, (res) => {
+        this.reSearch()
+      }, (error) => {
         console.log(error)
       })
     },
     destroy: function () {
-      let targetPath = baseUrl + '/api/coffee-beans/' + this.form.cid
-
-      axios.delete(targetPath, {}, config)
-      .then((res) => {
+      ApiClient.destroy('/api/coffee-beans', this.form.cid, (res) => {
         this.reSearch()
-      }).catch(function (error) {
-        console.log(error)
-      })
-    },
-    reSearch: function () {
-      this.search(this.coffeeShopId, (result) => {
-        this.coffeeBeans = result
+        this.addToggle = false
       }, (error) => {
         console.log(error)
-        this.$router.push('/signIn')
       })
     }
   },
   created: function () {
     this.coffeeShopId = this.$route.query['coffee-shop-id']
-    this.search(this.coffeeShopId, (result) => {
-      this.coffeeBeans = result
-    }, (error) => {
-      console.log(error)
-      this.$router.push('/signIn')
-    })
+    this.reSearch()
   }
 }
 </script>

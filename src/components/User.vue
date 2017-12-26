@@ -8,17 +8,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-axios.defaults.xsrfHeaderName = 'Csrf-Token'
-axios.defaults.xsrfCookieName = 'PLAY_CSRF_TOKEN'
-axios.defaults.withCredentials = true
-
-const baseUrl = 'http://localhost:9000'
-
-const config = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
-}
+import ApiClient from './utils/ApiClient'
 
 export default {
   data () {
@@ -36,23 +26,22 @@ export default {
       }
     }
   },
-  find: function (id) {
-    let targetPath = baseUrl + '/api/users/' + id
-    return axios.get(targetPath, config)
-    .then((res) => {
-      console.log(res.data)
-    }).catch(function (error) {
-      console.log(error)
-    })
-  },
   methods: {
-    search: function (callback, errorHandler) {
-      let targetPath = baseUrl + '/api/users'
-      return axios.get(targetPath, config)
-      .then((res) => {
-        callback(res.data)
-      }).catch(function (error) {
-        errorHandler(error)
+    find: function (id) {
+      ApiClient.find('/api/users/', id, (response) => {
+        console.log(response.data)
+      }, (error) => {
+        console.log(error)
+      })
+    },
+    reSearch: function () {
+      let targetPath = '/api/users'
+
+      ApiClient.search(targetPath, (response) => {
+        this.users = response.data
+      }, (error) => {
+        console.log(error)
+        this.$router.push('/signIn')
       })
     },
     update: function () {
@@ -61,12 +50,10 @@ export default {
         name: this.form.name,
         kind: this.form.role
       }
-      let targetPath = baseUrl + '/api/users'
 
-      axios.put(targetPath, params, config)
-      .then((res) => {
+      ApiClient.update('/api/users', params, (response) => {
         this.reSearch()
-      }).catch(function (error) {
+      }, (error) => {
         console.log(error)
       })
     },
@@ -76,42 +63,24 @@ export default {
         name: this.form.name,
         kind: this.form.email
       }
-      let targetPath = baseUrl + '/api/users'
 
-      axios.post(targetPath, params, config)
-      .then((res) => {
+      ApiClient.create('/api/users', params, (response) => {
         this.reSearch()
-        this.addToggle = false
-      }).catch(function (error) {
+      }, (error) => {
         console.log(error)
       })
     },
     destroy: function () {
-      let targetPath = baseUrl + '/api/users/' + this.form.uid
-
-      axios.delete(targetPath, {}, config)
-      .then((res) => {
+      ApiClient.destroy('/api/users', this.form.uid, (response) => {
         this.reSearch()
-      }).catch(function (error) {
-        console.log(error)
-      })
-    },
-    reSearch: function () {
-      this.search((result) => {
-        this.users = result
+        this.addToggle = false
       }, (error) => {
         console.log(error)
-        this.$router.push('/signIn')
       })
     }
   },
   created: function () {
-    this.search((result) => {
-      this.users = result
-    }, (error) => {
-      console.log(error)
-      this.$router.push('/signIn')
-    })
+    this.reSearch()
   }
 }
 </script>

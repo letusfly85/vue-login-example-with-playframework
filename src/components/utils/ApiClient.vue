@@ -15,60 +15,53 @@ export default {
   data () {
     return {}
   },
-  methods: {
-    find: function (path, id, callback, errorHandler) {
-      let targetPath = baseUrl + path + id
-      return axios.get(targetPath, config)
-      .then((response) => {
-        callback(response)
+  find: function (path, id, callback, errorHandler) {
+    let targetPath = baseUrl + path + id
+    return axios.get(targetPath, config)
+    .then((response) => {
+      callback(response)
+    }).catch(function (error) {
+      errorHandler(error)
+    })
+  },
+  search: function (pathWithQuery, callback, errorHandler) {
+    let targetPath = baseUrl + pathWithQuery
+    return axios.get(targetPath, config)
+    .then((response) => {
+      callback(response)
+    }).catch(function (error) {
+      errorHandler(error)
+    })
+  },
+  update: function (path, params, callback, errorHandler) {
+    let targetPath = baseUrl + path
 
-      }).catch(function (error) {
-        errorHandler(error)
-      })
-    },
-    search: function (pathWithQuery, callback, errorHandler) {
-      let targetPath = baseUrl + pathWithQuery
-      return axios.get(targetPath, config)
-      .then((response) => {
-        callback(response)
+    axios.put(targetPath, params, config)
+    .then((response) => {
+      callback(response)
+    }).catch(function (error) {
+      errorHandler(error)
+    })
+  },
+  create: function (path, params, callback, errorHandler) {
+    let targetPath = baseUrl + path
 
-      }).catch(function (error) {
-        errorHandler(error)
-      })
-    },
-    update: function (path, params, callback, errorHandler) {
-      let targetPath = baseUrl + path
+    axios.post(targetPath, params, config)
+    .then((response) => {
+      callback(response)
+    }).catch(function (error) {
+      errorHandler(error)
+    })
+  },
+  destroy: function (path, id, callback, errorHandler) {
+    let targetPath = baseUrl + path + '/' + id
 
-      axios.put(targetPath, params, config)
-      .then((response) => {
-        callback(response)
-
-      }).catch(function (error) {
-        errorHandler(error)
-      })
-    },
-    create: function (path, params, callback, errorHandler) {
-      let targetPath = baseUrl + path
-
-      axios.post(targetPath, params, config)
-      .then((response) => {
-        callback(response)
-
-      }).catch(function (error) {
-        errorHandler(error)
-      })
-    },
-    destroy: function (path, id, callback, errorHandler) {
-      let targetPath = baseUrl + path + id
-
-      axios.delete(targetPath, {}, config)
-      .then((response) => {
-        callback(response)
-
-      }).catch(function (error) {
-        errorHandler(error)
-      })
-    }
+    axios.delete(targetPath, {}, config)
+    .then((response) => {
+      callback(response)
+    }).catch(function (error) {
+      errorHandler(error)
+    })
   }
 }
 </script>
