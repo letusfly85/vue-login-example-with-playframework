@@ -6,8 +6,27 @@
           <div v-text="row.item.role" @click="row.item.editable = true" />
         </div>
         <div v-if="row.item.editable">
-          <input type="text" v-model="row.item.role" @blur="row.item.editable = false & blurHandler(row.item.role)" />
+          <b-form-select v-model="row.item.selected" :options="row.item.options" class="sb-3"
+            @input="row.item.editable = false; row.item.changed = true; row.item.role = row.item.selected">
+          </b-form-select>
         </div>
+      </template>
+      <template slot="update" slot-scope="row">
+        <b-form @submit="update">
+          <div v-if="row.item.changed">
+            <b-button type="submit" size="sm" variant="primary">update</b-button>
+            <b-row class="sr-only">
+            <b-form-input id="uid"
+                          v-bind:value="`${form.uid = row.item.id}`">
+            </b-form-input>
+            <b-form-input id="roleName"
+                          v-bind:value="`${form.role = row.item.role}`">
+            </b-form-input>
+            </b-row>
+          </div>
+          <div v-if="!row.item.changed">
+          </div>
+        </b-form>
       </template>
     </b-table>
   </div>
@@ -23,7 +42,8 @@ export default {
       fields: {
         id: {label: '-', sortable: false},
         email: {label: 'email', sortable: true},
-        role: {label: 'role', sortable: true}
+        role: {label: 'role', sortable: true},
+        update: {label: ' ', sortable: true}
       },
       form: {
         uid: '',
@@ -54,10 +74,14 @@ export default {
       ApiClient.search(targetPath, (response) => {
         this.users = response.data.map(function (user) {
           user.editable = false
+          user.changed = false
+          user.options = [
+            { value: user.role, text: user.role },
+            { value: (user.role === 'admin') ? 'normal' : 'admin', text: (user.role === 'admin') ? 'normal' : 'admin' }
+          ]
+          user.selected = user.role
           return user
         })
-        console.log(this.users)
-        // this.users = users
       }, (error) => {
         console.log(error)
         this.$router.push('/signIn')
@@ -66,7 +90,7 @@ export default {
     update: function () {
       let params = {
         id: Number(this.form.uid),
-        kind: this.form.role
+        role: this.form.role
       }
 
       ApiClient.update('/api/users', params, (response) => {
