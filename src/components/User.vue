@@ -1,5 +1,6 @@
 <template>
   <div>
+    <app-header></app-header>
     <b-table striped hover :items="users" :fields="fields">
       <template slot="role" slot-scope="row">
         <div v-if="!row.item.editable">
@@ -34,6 +35,7 @@
 
 <script>
 import ApiClient from './utils/ApiClient'
+import AppHeader from './AppHeader'
 
 export default {
   data () {
@@ -52,6 +54,7 @@ export default {
       }
     }
   },
+  components: { AppHeader },
   methods: {
     blurHandler: function (role) {
       if (this.editableRow === false) {
