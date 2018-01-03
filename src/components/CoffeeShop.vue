@@ -10,19 +10,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+import ApiClient from './utils/ApiClient'
 import AppHeader from './AppHeader'
 
-axios.defaults.xsrfHeaderName = 'Csrf-Token'
-axios.defaults.xsrfCookieName = 'PLAY_CSRF_TOKEN'
-axios.defaults.withCredentials = true
-
-const baseUrl = 'http://localhost:9000'
-
-const config = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
-}
+const resourcePath = '/api/coffee-shops'
 
 export default {
   name: 'CoffeeShop',
@@ -34,27 +25,23 @@ export default {
   components: { AppHeader },
   methods: {
     list: function (callback, errorHandler) {
-      let targetPath = baseUrl + '/api/coffee-shops'
-      return axios.get(targetPath, config)
-      .then((res) => {
-        callback(res.data)
-      }).catch(function (error) {
+      ApiClient.search(resourcePath, (response) => {
+        callback(response)
+      }, (error) => {
         errorHandler(error)
       })
     },
     find: function (id, callback) {
-      let targetPath = baseUrl + '/api/coffee-shops/' + id
-      return axios.get(targetPath, config)
-      .then((res) => {
-        callback(res.data)
-      }).catch(function (error) {
+      ApiClient.find(resourcePath, id, (response) => {
+        callback(response)
+      }, (error) => {
         console.log(error)
       })
     }
   },
   created: function () {
-    this.list((result) => {
-      this.coffeeShops = result
+    this.list((response) => {
+      this.coffeeShops = response.data
     }, (error) => {
       console.log(error)
       this.$router.push('/signIn')
