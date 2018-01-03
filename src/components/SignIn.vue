@@ -1,34 +1,39 @@
 <template>
   <div>
-   <b-form @submit="signIn()">
-     <b-form-group id="emailGroup"
-                   label="Email address:"
-                   description="We'll never share your email with anyone else.">
-       <b-form-input id="email"
-                     type="email"
-                     v-model="form.email"
-                     required
-                     placeholder="Enter email">
-       </b-form-input>
-    </b-form-group>
-    <b-form-group id="passwordGroup" label="Password:">
-       <b-form-input id="password"
-                     type="password"
-                     v-model="form.password"
-                     required
-                     placeholder="Enter Password">
-       </b-form-input>
-     </b-form-group>
-     <b-button type="submit" variant="primary">Sign In</b-button>
-   </b-form>
+    <div>
+      <b-navbar toggleable="md" type="dark" variant="info">
+        <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+        <b-navbar-brand href="#">Coffee</b-navbar-brand>
+      </b-navbar>
+    </div>
+    <div>
+     <b-form @submit="signIn()">
+       <b-form-group id="emailGroup"
+                     label="Email address:"
+                     description="We'll never share your email with anyone else.">
+         <b-form-input id="email"
+                       type="email"
+                       v-model="form.email"
+                       required
+                       placeholder="Enter email">
+         </b-form-input>
+      </b-form-group>
+      <b-form-group id="passwordGroup" label="Password:">
+         <b-form-input id="password"
+                       type="password"
+                       v-model="form.password"
+                       required
+                       placeholder="Enter Password">
+         </b-form-input>
+       </b-form-group>
+       <b-button type="submit" variant="primary">Sign In</b-button>
+     </b-form>
+   </div>
  </div>
 </template>
 
 <script>
-import axios from 'axios'
-import Auth from './Authenticate.vue'
-
-const baseUrl = 'http://localhost:9000'
+import Auth from './Authenticate'
 
 export default {
   name: 'SignIn',
@@ -37,8 +42,7 @@ export default {
       form: {
         email: '',
         password: ''
-      },
-      msg: 'Welcome to Your Vue.js App'
+      }
     }
   },
   methods: {
@@ -50,13 +54,7 @@ export default {
       })
     },
     home: function (callback, errorHandler) {
-      let targetPath = baseUrl + '/'
-      axios.get(targetPath)
-      .then((res) => {
-        callback(res)
-      }).catch(function (error) {
-        errorHandler(error)
-      })
+      Auth.home(callback, errorHandler)
     }
   },
   created: function () {
@@ -73,21 +71,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

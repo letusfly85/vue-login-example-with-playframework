@@ -13,11 +13,20 @@ const config = {
 export default {
   authenticate: function (path, params, callback) {
     let targetPath = baseUrl + path
-    return axios.post(targetPath, params, config)
+    axios.post(targetPath, params, config)
     .then((res) => {
       callback(res)
     }).catch(function (error) {
       console.log(error)
+    })
+  },
+  home: function (callback, errorHandler) {
+    let targetPath = baseUrl + '/'
+    axios.get(targetPath)
+    .then((res) => {
+      callback(res)
+    }).catch(function (error) {
+      errorHandler(error)
     })
   }
 }
