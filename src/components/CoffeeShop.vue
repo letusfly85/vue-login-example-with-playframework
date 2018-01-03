@@ -1,13 +1,17 @@
 <template>
+  <div>
+    <app-header></app-header>
     <b-table striped hover :items="coffeeShops">
       <template slot="id" slot-scope="row">
         <b-link :href="`#/coffee-beans?coffee-shop-id=${row.item.id}`">{{ row.item.id }}</b-link>
       </template>
     </b-table>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
+import AppHeader from './AppHeader'
 
 axios.defaults.xsrfHeaderName = 'Csrf-Token'
 axios.defaults.xsrfCookieName = 'PLAY_CSRF_TOKEN'
@@ -27,6 +31,7 @@ export default {
       coffeeShops: []
     }
   },
+  components: { AppHeader },
   methods: {
     list: function (callback, errorHandler) {
       let targetPath = baseUrl + '/api/coffee-shops'

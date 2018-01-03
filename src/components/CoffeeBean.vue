@@ -1,5 +1,6 @@
 <template>
   <div>
+    <app-header></app-header>
     <b-table striped hover :items="coffeeBeans" :fields="fields">
       <template slot="id" slot-scope="row">
         <b-button size="sm" @click.stop="row.toggleDetails" class="mr-2" variant="success">
@@ -86,6 +87,7 @@
 
 <script>
 import ApiClient from './utils/ApiClient'
+import AppHeader from './AppHeader'
 
 export default {
   data () {
@@ -106,6 +108,7 @@ export default {
       }
     }
   },
+  components: { AppHeader },
   methods: {
     find: function (id) {
       ApiClient.find('/api/coffee-beans/', id, (res) => {
