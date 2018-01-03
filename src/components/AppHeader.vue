@@ -33,7 +33,7 @@
             <em>User</em>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Signout</b-dropdown-item>
+          <b-dropdown-item-button v-on:click="signOut">Signout</b-dropdown-item-button>
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
@@ -41,3 +41,25 @@
   </b-navbar>
   </div>
 </template>
+
+<script>
+import ApiClient from './utils/ApiClient'
+import Router from 'vue-router'
+
+export default {
+  name: 'SignOut',
+  methods: {
+    signOut: function () {
+      var router = new Router()
+
+      let targetPath = '/signOut'
+      ApiClient.search(targetPath, (response) => {
+        router.go('/signIn')
+      }, (error) => {
+        console.log(error)
+        router.go('/signIn')
+      })
+    }
+  }
+}
+</script>
