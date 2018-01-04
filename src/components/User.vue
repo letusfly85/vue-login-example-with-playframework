@@ -30,12 +30,14 @@
         </b-form>
       </template>
     </b-table>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import ApiClient from './utils/ApiClient'
 import AppHeader from './AppHeader'
+import AppFooter from './AppFooter'
 
 export default {
   data () {
@@ -54,7 +56,7 @@ export default {
       }
     }
   },
-  components: { AppHeader },
+  components: { AppHeader, AppFooter },
   methods: {
     blurHandler: function (role) {
       if (this.editableRow === false) {

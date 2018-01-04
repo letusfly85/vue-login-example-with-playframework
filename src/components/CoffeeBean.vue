@@ -82,12 +82,14 @@
         </b-form>
       </b-card>
     </template>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import ApiClient from './utils/ApiClient'
 import AppHeader from './AppHeader'
+import AppFooter from './AppFooter'
 
 export default {
   data () {
@@ -108,7 +110,7 @@ export default {
       }
     }
   },
-  components: { AppHeader },
+  components: { AppHeader, AppFooter },
   methods: {
     find: function (id) {
       ApiClient.find('/api/coffee-beans/', id, (res) => {

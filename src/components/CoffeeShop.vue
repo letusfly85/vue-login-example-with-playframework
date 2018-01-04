@@ -6,12 +6,14 @@
         <b-link :href="`#/coffee-beans?coffee-shop-id=${row.item.id}`">{{ row.item.id }}</b-link>
       </template>
     </b-table>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import ApiClient from './utils/ApiClient'
 import AppHeader from './AppHeader'
+import AppFooter from './AppFooter'
 
 const resourcePath = '/api/coffee-shops'
 
@@ -22,7 +24,7 @@ export default {
       coffeeShops: []
     }
   },
-  components: { AppHeader },
+  components: { AppHeader, AppFooter },
   methods: {
     list: function (callback, errorHandler) {
       ApiClient.search(resourcePath, (response) => {
