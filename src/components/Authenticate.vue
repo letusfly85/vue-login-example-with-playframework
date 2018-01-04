@@ -21,7 +21,7 @@ export default {
     })
   },
   home: function (callback, errorHandler) {
-    let targetPath = baseUrl + '/'
+    let targetPath = baseUrl + '/home'
     axios.get(targetPath)
     .then((res) => {
       callback(res)
