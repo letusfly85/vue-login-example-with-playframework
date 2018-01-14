@@ -5,12 +5,32 @@
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
         <b-navbar-brand href="#">Coffee</b-navbar-brand>
          <b-navbar-nav class="ml-auto">
-          <b-navbar-brand href="#/signUp">Sign Up</b-navbar-brand>
+          <b-navbar-brand href="#/signIn">Sign In</b-navbar-brand>
         </b-navbar-nav>
       </b-navbar>
     </div>
     <div>
      <b-form @submit="signIn()">
+       <b-form-group id="firstNameGroup"
+                     label="First Name:"
+                     description="Your First Name">
+         <b-form-input id="firstName"
+                       type="text"
+                       v-model="form.firstName"
+                       required
+                       placeholder="Enter Your First Name">
+         </b-form-input>
+      </b-form-group>
+       <b-form-group id="lastNameGroup"
+                     label="Last Name:"
+                     description="Your Last Name">
+         <b-form-input id="lastName"
+                       type="text"
+                       v-model="form.lastName"
+                       required
+                       placeholder="Enter Your Last Name">
+         </b-form-input>
+      </b-form-group>
        <b-form-group id="emailGroup"
                      label="Email address:"
                      description="We'll never share your email with anyone else.">
@@ -29,7 +49,7 @@
                        placeholder="Enter Password">
          </b-form-input>
        </b-form-group>
-       <b-button type="submit" variant="primary">Sign In</b-button>
+       <b-button type="submit" variant="primary">Sign Up</b-button>
      </b-form>
    </div>
  </div>
@@ -39,10 +59,12 @@
 import Auth from './Authenticate'
 
 export default {
-  name: 'SignIn',
+  name: 'SignUp',
   data () {
     return {
       form: {
+        firstName: '',
+        lastName: '',
         email: '',
         password: ''
       }
@@ -50,9 +72,14 @@ export default {
   },
   methods: {
     signIn: function (event) {
-      let params = {email: this.form.email, password: this.form.password, rememberMe: true}
+      let params = {
+        firstName: this.form.firstName,
+        lastName: this.form.lastName,
+        email: this.form.email,
+        password: this.form.password
+      }
 
-      Auth.authenticate('/signIn', params, (res) => {
+      Auth.authenticate('/signUp', params, (res) => {
         this.$router.push('/coffee-shops')
       })
     },
@@ -65,11 +92,11 @@ export default {
       if (result.status === 200) {
         this.$router.push('/coffee-shops')
       } else {
-        this.$router.push('/signIn')
+        this.$router.push('/signUp')
       }
     }, (error) => {
       console.log(error)
-      this.$router.push('/signIn')
+      this.$router.push('/signUp')
     })
   }
 }
