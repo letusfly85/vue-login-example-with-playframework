@@ -33,6 +33,7 @@
             <em>User</em>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <b-dropdown-item href="#/password/change">Password Change</b-dropdown-item>
           <b-dropdown-item-button v-on:click="signOut">Signout</b-dropdown-item-button>
         </b-nav-item-dropdown>
       </b-navbar-nav>

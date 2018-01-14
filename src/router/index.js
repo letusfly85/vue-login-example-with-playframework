@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Router from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import SignIn from '@/components/SignIn'
+import PasswordChange from '@/components/PasswordChange'
 import CoffeeBean from '@/components/CoffeeBean.vue'
 import CoffeeShop from '@/components/CoffeeShop.vue'
 import User from '@/components/User.vue'
@@ -19,6 +20,11 @@ export default new Router({
       path: '/signIn',
       name: 'SignIn',
       component: SignIn
+    },
+    {
+      path: '/password/change',
+      name: 'PasswordChange',
+      component: PasswordChange
     },
     {
       path: '/coffee-beans',
