@@ -17,7 +17,8 @@ export default {
   },
   find: function (path, id, callback, errorHandler) {
     let targetPath = baseUrl + path + id
-    return axios.get(targetPath, config)
+
+    axios.get(targetPath, config)
     .then((response) => {
       callback(response)
     }).catch(function (error) {
@@ -26,7 +27,8 @@ export default {
   },
   search: function (pathWithQuery, callback, errorHandler) {
     let targetPath = baseUrl + pathWithQuery
-    return axios.get(targetPath, config)
+
+    axios.get(targetPath, config)
     .then((response) => {
       callback(response)
     }).catch(function (error) {

@@ -12,9 +12,9 @@
 #app-footer {
     background-color: skyblue;
     opacity: 10%;
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    position: relative;
+    width: 99%;
+    position: absolute;
+    margin-bottom: 5px;
+    bottom: 0;
 }
 </style>
