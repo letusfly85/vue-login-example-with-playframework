@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Router from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
+import Autocomplete from 'v-autocomplete'
 import SignIn from '@/components/SignIn'
 import SignUp from '@/components/SignUp'
 import PasswordChange from '@/components/PasswordChange'
@@ -14,6 +15,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(Vuex)
 Vue.use(Router)
 Vue.use(BootstrapVue)
+Vue.use(Autocomplete)
 
 export default new Router({
   routes: [

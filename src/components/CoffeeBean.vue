@@ -71,12 +71,16 @@
           </b-row>
 
           <b-row class="mb-2">
-          <b-form-input id="kind"
-                       type="text"
-                       v-model="form.kind"
-                       required
-                       placeholder='coffee kind'>
-          </b-form-input>
+            <v-autocomplete :items="coffeeKinds" v-model="form.kind" :get-label="getLabel" :component-item='template' @update-items="updateCoffeeKinds">
+            </v-autocomplete>
+            <!--
+            <b-form-input id="kind"
+                         type="text"
+                         v-model="form.kind"
+                         required
+                         placeholder='coffee kind'>
+            </b-form-input>
+          -->
           </b-row>
           <b-button type="submit" size="sm" variant="primary">Create</b-button>
         </b-form>
@@ -90,6 +94,8 @@
 import ApiClient from './utils/ApiClient'
 import AppHeader from './AppHeader'
 import AppFooter from './AppFooter'
+import Autocomplete from 'v-autocomplete'
+import ItemTemplate from './ItemTemplate'
 
 export default {
   data () {
@@ -101,6 +107,9 @@ export default {
         name: {label: 'name', sortable: true},
         kind: {label: 'kind', sortable: true}
       },
+      // coffeeKind: {id: 0, name: '', description: ''}
+      coffeeKinds: [],
+      template: ItemTemplate,
       coffeeBeans: [],
       form: {
         cid: '',
@@ -110,7 +119,7 @@ export default {
       }
     }
   },
-  components: { AppHeader, AppFooter },
+  components: { AppHeader, AppFooter, Autocomplete },
   methods: {
     find: function (id) {
       ApiClient.find('/api/coffee-beans/', id, (res) => {
@@ -165,11 +174,27 @@ export default {
       }, (error) => {
         console.log(error)
       })
+    },
+    getLabel: function (item) {
+      if (item !== null) {
+        return item.name
+      }
+    },
+    updateCoffeeKinds: function () {
+      let targetPath = '/api/coffee-kinds'
+
+      ApiClient.search(targetPath, (response) => {
+        this.coffeeKinds = response.data
+      }, (error) => {
+        console.log(error)
+        this.$router.push('/signIn')
+      })
     }
   },
   created: function () {
     this.coffeeShopId = this.$route.query['coffee-shop-id']
     this.reSearch()
+    this.updateCoffeeKinds()
   }
 }
 </script>
