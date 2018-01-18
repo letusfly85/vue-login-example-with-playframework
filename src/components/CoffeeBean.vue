@@ -94,7 +94,6 @@
 import ApiClient from './utils/ApiClient'
 import AppHeader from './AppHeader'
 import AppFooter from './AppFooter'
-import Autocomplete from 'v-autocomplete'
 import ItemTemplate from './ItemTemplate'
 
 export default {
@@ -107,7 +106,6 @@ export default {
         name: {label: 'name', sortable: true},
         kind: {label: 'kind', sortable: true}
       },
-      // coffeeKind: {id: 0, name: '', description: ''}
       coffeeKinds: [],
       template: ItemTemplate,
       coffeeBeans: [],
@@ -119,7 +117,7 @@ export default {
       }
     }
   },
-  components: { AppHeader, AppFooter, Autocomplete },
+  components: { AppHeader, AppFooter },
   methods: {
     find: function (id) {
       ApiClient.find('/api/coffee-beans/', id, (res) => {
@@ -142,7 +140,7 @@ export default {
       let params = {
         id: 0, // dummy value
         name: this.form.name,
-        kind: this.form.kind,
+        kind: this.form.kind.name,
         coffee_shop_id: Number(this.coffeeShopId)
       }
 
