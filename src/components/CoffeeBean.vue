@@ -73,14 +73,6 @@
           <b-row class="mb-2">
             <v-autocomplete :items="coffeeKinds" v-model="form.kind" :get-label="getLabel" :component-item='template' @update-items="updateCoffeeKinds">
             </v-autocomplete>
-            <!--
-            <b-form-input id="kind"
-                         type="text"
-                         v-model="form.kind"
-                         required
-                         placeholder='coffee kind'>
-            </b-form-input>
-          -->
           </b-row>
           <b-button type="submit" size="sm" variant="primary">Create</b-button>
         </b-form>
