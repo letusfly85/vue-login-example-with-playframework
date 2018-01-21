@@ -2,11 +2,35 @@
   <div>
     <app-header></app-header>
     <b-table striped hover :items="coffeeBeans" :fields="fields">
-      <template slot="id" slot-scope="row">
-        <b-button size="sm" @click.stop="row.toggleDetails" class="mr-2" variant="success">
-          {{ row.detailsShowing ? 'Cancel' : 'Update'}} Coffee Beans
-        </b-button>
+      <template slot="name" slot-scope="row">
+        <div v-if="!row.item.editable">
+          <div v-text="row.item.name" @click="row.item.editable = true" />
+        </div>
+        <div v-if="row.item.editable">
+          <b-form-input id="name"
+                       type="text"
+                       v-model="form.name"
+                       required
+                       @change="row.item.changed=true;"
+                       :placeholder="`${row.item.name}`">
+          </b-form-input>
+        </div>
       </template>
+      <template slot="kind" slot-scope="row">
+        <div v-if="!row.item.editable">
+          <div v-text="row.item.kind" @click="row.item.editable = true" />
+        </div>
+        <div v-if="row.item.editable">
+          <b-form-input id="kind"
+                       type="text"
+                       v-model="form.kind"
+                       required
+                       @change="row.item.changed=true;"
+                       :placeholder="`${row.item.kind}`">
+          </b-form-input>
+        </div>
+      </template>
+      <!--
       <template slot="row-details" slot-scope="row">
         <b-card>
           <b-form @submit="update">
@@ -50,6 +74,30 @@
             <b-button type="submit" size="sm" variant="primary">Destroy</b-button>
           </b-form>
         </b-card>
+      </template>
+      -->
+      <template slot="update" slot-scope="row">
+        <b-form @submit="update">
+          <div v-if="row.item.changed">
+            <b-button type="submit" size="sm" variant="primary">update</b-button>
+            <b-row class="sr-only">
+            <b-form-input id="cid"
+                          v-bind:value="`${form.cid = row.item.id}`">
+            </b-form-input>
+            <b-form-input id="name"
+                          v-bind:value="`${form.name = row.item.name}`">
+            </b-form-input>
+            <b-form-input id="kind"
+                          v-bind:value="`${form.kind = row.item.kind}`">
+            </b-form-input>
+            <b-form-input id="coffee_shop_id"
+                          v-bind:value="`${form.coffee_shop_id = row.item.coffee_shop_id}`">
+            </b-form-input>
+            </b-row>
+          </div>
+          <div v-if="!row.item.changed">
+          </div>
+        </b-form>
       </template>
     </b-table>
 
@@ -96,7 +144,8 @@ export default {
       fields: {
         id: {label: '-', sortable: false},
         name: {label: 'name', sortable: true},
-        kind: {label: 'kind', sortable: true}
+        kind: {label: 'kind', sortable: true},
+        update: {label: ' ', sortable: true}
       },
       coffeeKinds: [],
       template: ItemTemplate,
@@ -122,7 +171,12 @@ export default {
       let targetPath = '/api/coffee-beans?coffee-shop-id=' + this.coffeeShopId
 
       ApiClient.search(targetPath, (response) => {
-        this.coffeeBeans = response.data
+        this.coffeeBeans = response.data.map(function (bean) {
+          bean.editable = false
+          bean.changed = false
+
+          return bean
+        })
       }, (error) => {
         console.log(error)
         this.$router.push('/signIn')
@@ -150,6 +204,7 @@ export default {
         kind: this.form.kind,
         coffee_shop_id: Number(this.form.coffee_shop_id)
       }
+      console.log(params)
 
       ApiClient.update('/api/coffee-beans', params, (res) => {
         this.reSearch()

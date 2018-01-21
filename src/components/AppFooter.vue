@@ -12,7 +12,7 @@
 #app-footer {
     background-color: skyblue;
     opacity: 10%;
-    width: 99%;
+    width: 99.4%;
     position: absolute;
     margin-bottom: 5px;
     bottom: 0;
