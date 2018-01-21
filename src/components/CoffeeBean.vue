@@ -21,61 +21,17 @@
           <div v-text="row.item.kind" @click="row.item.editable = true" />
         </div>
         <div v-if="row.item.editable">
-          <b-form-input id="kind"
-                       type="text"
-                       v-model="form.kind"
-                       required
-                       @change="row.item.changed=true;"
-                       :placeholder="`${row.item.kind}`">
-          </b-form-input>
+          <b-row class="mb-2">
+            <v-autocomplete :items="coffeeKinds"
+              v-model="form.kind"
+              :get-label="getLabel"
+              :component-item='template'
+              @change="row.item.changed=true;"
+              @update-items="updateCoffeeKinds">
+            </v-autocomplete>
+          </b-row>
         </div>
       </template>
-      <!--
-      <template slot="row-details" slot-scope="row">
-        <b-card>
-          <b-form @submit="update">
-            <b-row class="mb-2">
-            <b-form-input id="name"
-                         type="text"
-                         v-model="form.name"
-                         required
-                         :placeholder="`${row.item.name}`">
-            </b-form-input>
-            </b-row>
-
-            <b-row class="mb-2">
-            <b-form-input id="kind"
-                         type="text"
-                         v-model="form.kind"
-                         required
-                         :placeholder="`${row.item.kind}`">
-            </b-form-input>
-            </b-row>
-
-            <b-row class="sr-only">
-            <b-form-input id="cid"
-                          v-bind:value="`${form.cid = row.item.id}`">
-            </b-form-input>
-            <b-form-input id="coffee_shop_id"
-                          v-bind:value="`${form.coffee_shop_id = row.item.coffee_shop_id}`">
-            </b-form-input>
-            </b-row>
-
-            <b-button type="submit" size="sm" variant="primary">Update</b-button>
-            <br/>
-            <br/>
-          </b-form>
-          <b-form @submit="destroy">
-            <b-row class="sr-only">
-            <b-form-input id="cid"
-                          v-bind:value="`${form.cid= row.item.id}`">
-            </b-form-input>
-            </b-row>
-            <b-button type="submit" size="sm" variant="primary">Destroy</b-button>
-          </b-form>
-        </b-card>
-      </template>
-      -->
       <template slot="update" slot-scope="row">
         <b-form @submit="update">
           <div v-if="row.item.changed">
@@ -83,12 +39,6 @@
             <b-row class="sr-only">
             <b-form-input id="cid"
                           v-bind:value="`${form.cid = row.item.id}`">
-            </b-form-input>
-            <b-form-input id="name"
-                          v-bind:value="`${form.name = row.item.name}`">
-            </b-form-input>
-            <b-form-input id="kind"
-                          v-bind:value="`${form.kind = row.item.kind}`">
             </b-form-input>
             <b-form-input id="coffee_shop_id"
                           v-bind:value="`${form.coffee_shop_id = row.item.coffee_shop_id}`">
@@ -201,10 +151,9 @@ export default {
       let params = {
         id: Number(this.form.cid),
         name: this.form.name,
-        kind: this.form.kind,
+        kind: this.form.kind.name,
         coffee_shop_id: Number(this.form.coffee_shop_id)
       }
-      console.log(params)
 
       ApiClient.update('/api/coffee-beans', params, (res) => {
         this.reSearch()
